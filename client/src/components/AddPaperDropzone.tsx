@@ -8,20 +8,33 @@ export default function AddPaperDropzone() {
   const refreshPapers = useStore((s) => s.refreshPapers);
   const [over, setOver] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function handleFiles(files: FileList | null) {
     if (!files || files.length === 0) return;
     setBusy(true);
+    setError(null);
     try {
       let lastId: string | null = null;
+      let skipped = 0;
       for (const f of Array.from(files)) {
-        if (!f.name.toLowerCase().endsWith(".pdf")) continue;
+        if (!f.name.toLowerCase().endsWith(".pdf")) {
+          skipped++;
+          continue;
+        }
         const { paper } = await api.addPaper(f);
         lastId = paper.id;
       }
+      if (!lastId) {
+        setError(skipped > 0 ? "PDF 파일만 추가할 수 있습니다." : "추가할 PDF가 없습니다.");
+        return;
+      }
       await refreshPapers();
-      if (lastId) await openPaper(lastId); // 추가 후 리더 진입 + 자동 분석
+      await openPaper(lastId); // 추가 후 리더 진입 + 자동 분석
+    } catch (e: any) {
+      // 서버 미기동/네트워크 오류 등을 화면에 표시 (조용한 실패 방지)
+      setError(`업로드 실패: ${e?.message ?? e}. 서버(5174)가 떠 있는지 확인하세요.`);
     } finally {
       setBusy(false);
     }
@@ -56,6 +69,7 @@ export default function AddPaperDropzone() {
       <p className="text-slate-500">
         {busy ? "추가 중…" : "PDF를 끌어다 놓거나 클릭해서 선택 — 해시로 중복을 판정하고 자동 분석을 시작합니다"}
       </p>
+      {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
     </div>
   );
 }
