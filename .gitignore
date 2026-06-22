@@ -1,0 +1,8 @@
+node_modules/
+dist/
+*.tsbuildinfo
+*.log
+.DS_Store
+.env
+.env.local
+# 앱 데이터(라이브러리 DB·PDF 사본)는 OS 앱데이터 폴더에 저장되므로 레포엔 없음

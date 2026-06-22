@@ -1,0 +1,20 @@
+{
+  "name": "paper-reader",
+  "version": "0.1.0",
+  "private": true,
+  "description": "논문 읽기 보조 데스크톱 도구 (local-first, Claude Agent SDK)",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n server,client -c blue,green \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "npm -w server run dev",
+    "dev:client": "npm -w client run dev",
+    "build": "npm -w server run build && npm -w client run build",
+    "start": "npm -w server run start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
