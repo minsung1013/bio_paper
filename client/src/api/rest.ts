@@ -19,8 +19,21 @@ export interface PaperBundle {
   chat: ChatMessage[];
 }
 
+export interface AppSettings {
+  model?: string;
+  effectiveModel: string | null;
+  envOverride?: boolean;
+}
+
 export const api = {
   claudeStatus: () => fetch("/api/claude-status").then(j<ClaudeStatus>),
+  getSettings: () => fetch("/api/settings").then(j<AppSettings>),
+  setModel: (model: string) =>
+    fetch("/api/settings", {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ model }),
+    }).then(j<AppSettings>),
   listPapers: () => fetch("/api/papers").then(j<Paper[]>),
   getPaper: (id: string) => fetch(`/api/papers/${id}`).then(j<PaperBundle>),
   pdfUrl: (id: string) => `/api/papers/${id}/pdf`,

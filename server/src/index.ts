@@ -10,6 +10,7 @@ import { config, ensureDirs } from "./config.js";
 import "./db/schema.js"; // DDL 초기화
 import { paperRoutes } from "./routes/papers.js";
 import { highlightRoutes } from "./routes/highlights.js";
+import { settingsRoutes } from "./routes/settings.js";
 import { registerWs } from "./ws/hub.js";
 
 async function main(): Promise<void> {
@@ -29,6 +30,7 @@ async function main(): Promise<void> {
 
   await app.register(paperRoutes);
   await app.register(highlightRoutes);
+  await app.register(settingsRoutes);
   await app.register(registerWs);
 
   app.get("/api/health", async () => ({ ok: true, config }));

@@ -10,6 +10,7 @@ import {
 import { useStore } from "../store/useStore";
 import type { Paper } from "../types";
 import AddPaperDropzone from "../components/AddPaperDropzone";
+import ModelSelector from "../components/ModelSelector";
 
 const col = createColumnHelper<Paper>();
 const STATUS_LABEL: Record<string, string> = { pending: "대기", running: "분석 중", done: "완료", error: "오류" };
@@ -57,12 +58,15 @@ export default function LibraryView() {
     <div className="h-full flex flex-col bg-slate-50">
       <header className="px-6 py-4 border-b bg-white flex items-center gap-4">
         <h1 className="text-xl font-bold">📚 Paper Reader</h1>
-        <input
-          className="ml-auto px-3 py-1.5 border rounded-lg text-sm w-72"
-          placeholder="제목·저자·연도 검색"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
+        <div className="ml-auto flex items-center gap-4">
+          <ModelSelector />
+          <input
+            className="px-3 py-1.5 border rounded-lg text-sm w-72"
+            placeholder="제목·저자·연도 검색"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </div>
       </header>
 
       <div className="p-6 space-y-4 overflow-auto">

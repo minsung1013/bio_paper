@@ -8,6 +8,7 @@ import InfoPanel from "../components/InfoPanel";
 import ChatPanel from "../components/ChatPanel";
 import HighlightPanel from "../components/HighlightPanel";
 import Markdown from "../components/Markdown";
+import ModelSelector from "../components/ModelSelector";
 import type { SelectionAction } from "../types";
 
 type Tab = "info" | "chat" | "highlights";
@@ -59,6 +60,7 @@ export default function ReaderView() {
         <h2 className="font-semibold text-sm truncate flex-1">
           {paper.title || paper.original_name || "(제목 미정)"}
         </h2>
+        <ModelSelector />
       </header>
 
       <div className="flex-1 flex min-h-0">

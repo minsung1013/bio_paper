@@ -10,6 +10,7 @@
 import { query, type Options, type PermissionResult } from "@anthropic-ai/claude-agent-sdk";
 import { resolve } from "node:path";
 import { config } from "../config.js";
+import { getModel } from "../settings.js";
 import { ensurePaperWorkspace } from "./skill.js";
 import { getSessionId, setSessionId, getPaperFilePath } from "../db/queries.js";
 
@@ -107,7 +108,7 @@ async function execTurn(
 
   const options: Options = {
     cwd,
-    model: config.model,
+    model: getModel(), // 설정/환경변수에서 동적으로(새 턴부터 즉시 적용)
     allowedTools: ["Read", "WebSearch"],
     disallowedTools: ["Bash", "Write", "Edit", "NotebookEdit"],
     permissionMode: "dontAsk", // 미승인 시 프롬프트 없이 거부 = fail-closed
